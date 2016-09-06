@@ -3,6 +3,13 @@
     "name": "Text Replacer",
     "description": "Test plugin for highlighting words and adding on hover event",
     "version": "1.0",
+	"browser_action": {
+		"default_icon": "off.png",
+		"default_title": "icon"
+	},
+	"background": {
+		"scripts": ["background.js"]
+	},
     "content_scripts": [
         {
             "matches": [
