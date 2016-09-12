@@ -1,12 +1,14 @@
-var toggle = false;
-chrome.browserAction.onClicked.addListener(function(tab) {
-  toggle = !toggle;
-  if(toggle){
-    //chrome.browserAction.setIcon({path: "on.png", tabId:tab.id});
-    chrome.tabs.executeScript(tab.id, {file:"content.js"});
-  }
-  else{
-    //chrome.browserAction.setIcon({path: "off.png", tabId:tab.id});
-    chrome.tabs.executeScript(tab.id, {code:"alert()"});
-  }
+var counter = 0;
+var myTab = tab.id;
+chrome.browserAction.setIcon({path: "img/on.png", myTab});
+
+
+chrome.browserAction.onClicked.addListener(function (tab) {
+	counter++;
+	chrome.extension.getBackgroundPage().console.log('foo');
+	chrome.browserAction.setIcon({path:"off.png"});
+	console.log(counter);
+	if (counter == 5){
+		alert("5 clicks!!!");
+	}
 });
