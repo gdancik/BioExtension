@@ -7,9 +7,6 @@
 		"default_icon": "off.png",
 		"default_title": "icon"
 	},
-	"background": {
-		"scripts": ["background.js"]
-	},
     "content_scripts": [
         {
             "matches": [
