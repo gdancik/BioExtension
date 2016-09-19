@@ -28,10 +28,12 @@ function setState(){
 			}
 		});
 		document.getElementById('state').innerHTML = "Enable";
+		document.getElementById('highlight').disabled = true;
 	}
 	else {
 		enable = true;
 		//chrome.browserAction.setIcon({path: "img/on.png"});
 		document.getElementById('state').innerHTML = "Disable";
+		document.getElementById('highlight').disabled = false;
 	}
 }
