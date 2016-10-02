@@ -1,9 +1,10 @@
 //Global variables for this class
 var enable;
+var string;
 
 document.getElementById('highlight').addEventListener('click', sendHighlightMessage, false);
 document.getElementById('state').addEventListener('click', setState);
-
+document.getElementById('submit').addEventListener('click', submit);
 
 //When user clicks on the chrome icon it reloads the page hence we need to set up the elements corectly acording to the last
 //settings from when the icon was clicked (enabled buttons or disabled buttons)
@@ -24,6 +25,11 @@ document.addEventListener("DOMContentLoaded",function (){
 
     	//Now that we have inported the state we must set up the page corectely
     	setupPage();
+    });
+
+    chrome.storage.local.get("string", function(obj){
+    	string = obj["string"];
+    	console.log(string);
     });
 });
 
@@ -105,4 +111,12 @@ function sleep(dur) {
     //Do nothing
   }
 
+}
+
+function submit(){
+	string += document.getElementById('text').value;
+
+	chrome.storage.local.set({"string": string}, function(){
+		console.log("Saved string variable");
+	});
 }
