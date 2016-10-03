@@ -1,12 +1,30 @@
+//Global variable declarations
 
-//Enable or disable 
+//Enable or disable (prevents user from running program when disabled)
 var run = true;
 
-//Words to check
-var words = ["Democratic", "Jacksonians", "Massachusetts"];
+//Search string as basic string
+var string = "";
+
+//Words to check for
+var words = [];
 
 //Definitions of words
-var defs = ["Political Party", "I really don't know", "State in New-England"];
+//var defs = ["Political Party", "I really don't know", "State in New-England"];
+
+//load all words from chome storage api
+chrome.storage.local.get("string", function(obj){
+   	string = obj["string"];
+   	console.log(string);
+});
+
+//Run parser
+parse();
+
+for (var i = 0; i < words.length; i++){
+	console.log(words[i]);
+}
+
 
 
 //Start of program
@@ -19,6 +37,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     sendResponse({messageStatus: "received"});
   }
 });
+
+
+
+
+
+
+
+//Function Declarations
 
 function enable(){
 	run = true;
@@ -48,31 +74,15 @@ function highlightText(element) {
 		allText = splitText.join(" ");
 		allText += "<script>function test(){console.log('testfire!!!');}</script>"
 		element.innerHTML = allText;
-		//element.innerHTML = splitText.join(" ");
-		//addListener(changes);
 	}
 }	
 
-
-function addListener(changeCount){
-	console.log("Waiting for page to finish loading");
-	sleep(10000);
-	console.log("Page loaded adding listers!");
-	for (var i = 0; i < changeCount; i++){
-		console.log("Current index: " + i);
-		document.getElementById('myGeneSpans' + i).addEventListener("click", test);
+//Parse string and get words/ phrases seperated by a comma
+function parse(){
+	var index = string.indexOf(",");
+	while (index != -1){
+		words.push(string.substring(0, index));
+		string = string.substring(index, string.length);
+		index = string.indexOf(",");
 	}
-	
-}
-
-function test(){
-	console.log("Test fire!");
-}
-
-function sleep(dur) {
- var d = new Date().getTime() + dur;
-  while(new Date().getTime() <= d ) {
-    //Do nothing
-  }
-
 }

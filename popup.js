@@ -5,6 +5,7 @@ var string;
 document.getElementById('highlight').addEventListener('click', sendHighlightMessage, false);
 document.getElementById('state').addEventListener('click', setState);
 document.getElementById('submit').addEventListener('click', submit);
+document.getElementById('file').addEventListener('click', loadFile)
 
 //When user clicks on the chrome icon it reloads the page hence we need to set up the elements corectly acording to the last
 //settings from when the icon was clicked (enabled buttons or disabled buttons)
@@ -33,7 +34,25 @@ document.addEventListener("DOMContentLoaded",function (){
     });
 });
 
-
+var loadFile = function(event) {
+  console.log("in loadFile");
+  var file = event.target.files[0];
+  console.log("got file");
+  if (file != null){
+  var reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) {
+    	console.log("onload");
+      string = evt.target.result;
+      console.log("set string");
+    }
+    reader.onerror = function (evt) {
+    	console.log("error reading file");
+    	syncString();
+      //document.getElementById("fileContents").innerHTML = "error reading file";
+    }
+  }
+} 
 
 //Sends a message to the content.js script to begin the process of highlighting key words on the 
 //webpage
@@ -121,3 +140,8 @@ function submit(){
 	});
 }
 
+function syncString(){
+	chrome.storage.local.set({"string":string},function (){
+        	console.log("Saved String");
+    	});
+}
