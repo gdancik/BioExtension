@@ -120,3 +120,4 @@ function submit(){
 		console.log("Saved string variable");
 	});
 }
+
