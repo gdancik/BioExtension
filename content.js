@@ -12,27 +12,17 @@ var words = [];
 //Definitions of words
 //var defs = ["Political Party", "I really don't know", "State in New-England"];
 
-//load all words from chome storage api
-chrome.storage.local.get("string", function(obj){
-   	string = obj["string"];
-   	console.log(string);
-});
+
 
 
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.highlight === true) {
-	console.log("hi");
     highlightText(document.body);
     sendResponse({messageStatus: "received"});
   }
 });
-
-
-
-
-
 
 
 //Function Declarations
@@ -46,15 +36,47 @@ console.log("Done");
 
 
 function highlightText(element) {
-	if (words.length <= 0){
-		console.log("words isn't initialized");
-		//call parser
-		parse();
-		for (var i = 0; i < words.length; i++){
-			console.log("Item: " + i);
-			console.log(words[i]);
-		}
+	getString(element, callback);
+	
+}	
+
+//Parse string and get words/ phrases seperated by a comma
+function parse(){
+	console.log("in parser");
+	console.log("Before loop");
+	console.log("String (in parser): " + string);
+	var index = string.indexOf("\n");
+	while (index != -1){
+		console.log("in loop");
+		words.push(string.substring(0, index));
+		string = string.substring(index + 1, string.length);
+		index = string.indexOf("\n");
+		console.log("Length of words: " + words.length);
 	}
+	words.push(string);
+	console.log("leaving parser");
+}
+
+function getString(element, callback){
+	//load all words from chome storage api
+	console.log("Geting string");
+	chrome.storage.local.get("string", function(obj){
+   		string = obj["string"];
+   		console.log("String (in getString): " + string);
+   		parse();
+   		callback(element);
+	});
+}
+
+function callback(element){
+	console.log("Just after getString function call.");
+
+	//Print all words for debuging
+	console.log("Printing out words in my callback!!!");
+	for (var i = 0; i < words.length; i++){
+		console.log(words[i]);
+	}
+	
 	console.log("Searching Doc...");
 	var allText = element.innerHTML;
 	var splitText = allText.split(" ");
@@ -63,27 +85,18 @@ function highlightText(element) {
 	for (var i = 0; i < splitText.length; i++){
 		var textIndex = words.indexOf(splitText[i]);
 		if (textIndex > -1){
-			splitText[i] = "<span onclick='test()' id='myGeneSpans" + changes + "' style='background-color: yellow'; title='" + defs[textIndex] + "'>" + splitText[i] + "</span>";
+			console.log("!!!!!!!!!!!!!!!!!!!!!!!MATCH!!!!!!!!!!!!!!!!!!!!!!!!");
+			console.log(words[textIndex]);
+			splitText[i] = "<span style='background-color: yellow'>" + splitText[i] + "</span>";
 			changes++;
 		}
 	}
 	
+	console.log("Done Searching Doc!");
+
 	if (changes > 0){
 		console.log("Changes made!");
 		allText = splitText.join(" ");
-		allText += "<script>function test(){console.log('testfire!!!');}</script>"
 		element.innerHTML = allText;
 	}
-}	
-
-//Parse string and get words/ phrases seperated by a comma
-function parse(){
-	console.log("in parser");
-	var index = string.indexOf("\n");
-	while (index != -1){
-		words.push(string.substring(0, index));
-		string = string.substring(index + 1, string.length);
-		index = string.indexOf("\n");
-	}
-	console.log("leaving parser");
 }

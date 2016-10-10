@@ -11,9 +11,9 @@ chrome.storage.local.get("enable", function(obj){
    	}
 });
 
-chrome.storage.local.get("search", function(obj){
-	if (typeof obj["search"] === undefined){
-		chrome.storage.local.set({"search":""},function(){
+chrome.storage.local.get("string", function(obj){
+	if (typeof obj["string"] === undefined){
+		chrome.storage.local.set({"string":""},function(){
 			console.log("search var initialized")
 		});
 	}
