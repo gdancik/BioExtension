@@ -18,17 +18,8 @@ chrome.storage.local.get("string", function(obj){
    	console.log(string);
 });
 
-//Run parser
-parse();
-
-for (var i = 0; i < words.length; i++){
-	console.log(words[i]);
-}
 
 
-
-//Start of program
-console.log("Start");
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.highlight === true) {
@@ -50,12 +41,20 @@ function enable(){
 	run = true;
 	alert('enabled');
 }
-body.innerHTML = tempSplit.join(" ");
 
 console.log("Done");
 
 
 function highlightText(element) {
+	if (words.length <= 0){
+		console.log("words isn't initialized");
+		//call parser
+		parse();
+		for (var i = 0; i < words.length; i++){
+			console.log("Item: " + i);
+			console.log(words[i]);
+		}
+	}
 	console.log("Searching Doc...");
 	var allText = element.innerHTML;
 	var splitText = allText.split(" ");
@@ -79,10 +78,12 @@ function highlightText(element) {
 
 //Parse string and get words/ phrases seperated by a comma
 function parse(){
-	var index = string.indexOf(",");
+	console.log("in parser");
+	var index = string.indexOf("\n");
 	while (index != -1){
 		words.push(string.substring(0, index));
-		string = string.substring(index, string.length);
-		index = string.indexOf(",");
+		string = string.substring(index + 1, string.length);
+		index = string.indexOf("\n");
 	}
+	console.log("leaving parser");
 }

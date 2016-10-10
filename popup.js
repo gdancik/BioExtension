@@ -35,21 +35,18 @@ document.addEventListener("DOMContentLoaded",function (){
 });
 
 function loadFile(event) {
-  console.log("in loadFile");
   var file = event.target.files[0];
-  console.log("got file");
   if (file != null){
-  	console.log("In if");
-  var reader = new FileReader();
+  	var reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = function (evt) {
-    	console.log("onload");
       string = evt.target.result;
-      console.log("set string");
+      chrome.storage.local.set({"string":string},function (){
+       	console.log("Saved String");
+      });
     }
     reader.onerror = function (evt) {
     	console.log("error reading file");
-    	syncString();
       //document.getElementById("fileContents").innerHTML = "error reading file";
     }
   }
