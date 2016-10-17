@@ -41,7 +41,7 @@ function highlightText(element) {
 }	
 
 //Parse string and get words/ phrases seperated by a comma
-function parse(){
+function parse(element, callback){
 	console.log("in parser");
 	console.log("Before loop");
 	console.log("String (in parser): " + string);
@@ -55,6 +55,7 @@ function parse(){
 	}
 	words.push(string);
 	console.log("leaving parser");
+	callback(element);
 }
 
 function getString(element, callback){
@@ -63,8 +64,7 @@ function getString(element, callback){
 	chrome.storage.local.get("string", function(obj){
    		string = obj["string"];
    		console.log("String (in getString): " + string);
-   		parse();
-   		callback(element);
+   		parse(element, callback);
 	});
 }
 
@@ -83,7 +83,12 @@ function callback(element){
 	
 	var changes = 0;
 	for (var i = 0; i < splitText.length; i++){
-		var textIndex = words.indexOf(splitText[i]);
+		checkingWord = splitText[i];
+		console.log(checkingWord);
+		var textIndex = words.indexOf(checkingWord);
+      
+      	console.log(textIndex);
+
 		if (textIndex > -1){
 			console.log("!!!!!!!!!!!!!!!!!!!!!!!MATCH!!!!!!!!!!!!!!!!!!!!!!!!");
 			console.log(words[textIndex]);
