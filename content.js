@@ -80,12 +80,13 @@ function callback(element){
 	console.log("Searching Doc...");
 	var allText = element.innerHTML;
 	var splitText = allText.split(" ");
-	
+	var textIndex = -1;
 	var changes = 0;
+	
 	for (var i = 0; i < splitText.length; i++){
 		checkingWord = splitText[i];
 		console.log(checkingWord);
-		var textIndex = words.indexOf(checkingWord);
+		textIndex = words.indexOf(checkingWord);
       
       	console.log(textIndex);
 

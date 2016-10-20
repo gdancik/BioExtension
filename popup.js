@@ -19,8 +19,11 @@ document.addEventListener("DOMContentLoaded",function (){
     		enable = false;
     	}
     	else{
+        enable = true; //We will asume plugin is alway enabled unless otherwise noted
     		console.log("ERROR: Doc Load: failed to compare storage");
-    		enable = true; //default enable state
+    		chrome.storage.local.set({"enable":"true"},function (){
+          console.log("Storage Succesful");
+        });
     	}
     	console.log("Is enabled: " + obj["enable"]);
 
@@ -56,6 +59,7 @@ function loadFile(event) {
 //webpage
 function sendHighlightMessage() {
 	if (enable){
+    console.log("Sending highlight message");
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 			chrome.tabs.sendMessage(tabs[0].id, {highlight: true}, function(response) {
 			console.log(response);
