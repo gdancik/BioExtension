@@ -106,7 +106,7 @@ function callback(element){
 	for (var i = 0; i < words.length; i++){
 		var word = words[i].trim();
 		console.log("Currently Highlighting: " + word);
-	
+		
 		var allText = element.innerHTML;
   		var regex1 = new RegExp("\\b"+word+"\\b", "ig");
   		console.log(regex1);
