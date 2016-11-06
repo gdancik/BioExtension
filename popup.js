@@ -1,3 +1,11 @@
+/**
+* @file
+* @author Daniel Shenkle <shenkled@my.easternct.edu
+* @date 11/5/2016
+* @breif the popup.js file is used for all actions completed by the popup
+*/
+
+
 //Global variables for this class
 var enable;
 var string;
@@ -34,6 +42,9 @@ document.addEventListener("DOMContentLoaded",function (){
     });
 });
 
+/**
+* Loads the file that was chosen by the user in the file chooser popup. 
+*/
 function loadFile(event) {
   var file = event.target.files[0];
   if (file != null){
@@ -52,8 +63,9 @@ function loadFile(event) {
   }
 } 
 
-//Sends a message to the content.js script to begin the process of highlighting key words on the 
-//webpage
+/**
+* Sends a message to the content.js script to begin the process of highlighting key words on the webpage.
+*/
 function sendHighlightMessage() {
 	if (enable){
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -70,7 +82,9 @@ function sendHighlightMessage() {
 }
 
 
-//This funciton will set the sate of the extension (either enabled or disabled)
+/**
+* Sets the state of the extension (either enabled or disabled)
+*/
 function setState(){
 
 	if (enable == true){
@@ -84,9 +98,10 @@ function setState(){
 	saveState();
 }
 
-
-//This function will save the curent value of enable into chromes storage 
-//This saves the current state of the popup for the next time a user clicks on it.
+/**
+* Saves the current value of enable into chromes storage API. 
+* This saves the current state of the popup for the next time a user clicks on it. 
+*/
 function saveState(){
 	if (enable == true){
     	chrome.storage.local.set({"enable":"true"},function (){
@@ -105,8 +120,10 @@ function saveState(){
     });
 }
 
-//function sets up the page correctely bassed on the current state (enabled or
-//disabled)
+
+/**
+* Sets up the page correctely bassed on the current state (enabled or disabled).
+*/
 function setupPage(){
 	if (enable == true){
 		document.getElementById('state').innerHTML = "Disable";
@@ -121,15 +138,9 @@ function setupPage(){
 	}
 }
 
-//My sleep function
-function sleep(dur) {
- var d = new Date().getTime() + dur;
-  while(new Date().getTime() <= d ) {
-    //Do nothing
-  }
-
-}
-
+/**
+* Submits the contents of the text file choosen as a string into chromes storage API for use in the content.js script.
+*/
 function submit(){
 	string += document.getElementById('text').value;
 
@@ -137,6 +148,10 @@ function submit(){
 		console.log("Saved string variable");
 	});
 }
+
+/**
+* I am honestly unsure about this one (hence the documentation frenzy)
+*/
 
 function syncString(){
 	chrome.storage.local.set({"string":string},function (){

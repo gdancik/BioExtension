@@ -1,3 +1,10 @@
+/**
+* @file
+* @author Daniel Shenkle <shenkled@my.easternct.edu
+* @date 11/5/2016
+* @breif the content.js file is where the actual working code of the plugin resides.
+*/
+
 //Global variable declarations
 
 //Enable or disable (prevents user from running program when disabled)
@@ -13,13 +20,20 @@ var words = [];
 //var defs = ["Political Party", "I really don't know", "State in New-England"];
 
 
-
+chrome.storage.local.get("enable", function(obj){
+   		string = obj["enable"];
+   		console.log("Enable: " + string);
+   		if (string === "true"){
+   			highlightText(document.body);
+   		}
+	});
 
 
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.highlight === true) {
     highlightText(document.body);
+    console.log("Got highlight message!!!");
     sendResponse({messageStatus: "received"});
   }
 });
@@ -35,12 +49,21 @@ function enable(){
 console.log("Done");
 
 
+/**
+* Calls all functions required to highlight text on a page (getString()).
+*/
+
 function highlightText(element) {
 	getString(element, callback);
 	
 }	
 
 //Parse string and get words/ phrases seperated by a comma
+
+/** 
+* Parsees a string and gets words/ phrases seperated by a newline and stores them in an array.
+* This string will come from the file loaded into the chrome storage API by the plugin popup.
+*/
 function parse(element, callback){
 	console.log("in parser");
 	console.log("Before loop");
@@ -58,6 +81,10 @@ function parse(element, callback){
 	callback(element);
 }
 
+/** 
+* Retrives the string that is stored in the chrome storage API by the plugin popup.
+*/
+
 function getString(element, callback){
 	//load all words from chome storage api
 	console.log("Geting string");
@@ -68,40 +95,24 @@ function getString(element, callback){
 	});
 }
 
+/**
+* Takes the documents HTML and searches it for words, or phrases that have been seet by the getString()/ parse() functions.
+* Uppon finding a match the function adds a span to the HTML that will highlight the word/ phrase.
+*/
+
 function callback(element){
 	console.log("Just after getString function call.");
 
-	//Print all words for debuging
-	console.log("Printing out words in my callback!!!");
 	for (var i = 0; i < words.length; i++){
-		console.log(words[i]);
-	}
+		var word = words[i].trim();
+		console.log("Currently Highlighting: " + word);
 	
-	console.log("Searching Doc...");
-	var allText = element.innerHTML;
-	var splitText = allText.split(" ");
-	
-	var changes = 0;
-	for (var i = 0; i < splitText.length; i++){
-		checkingWord = splitText[i];
-		console.log(checkingWord);
-		var textIndex = words.indexOf(checkingWord);
-      
-      	console.log(textIndex);
-
-		if (textIndex > -1){
-			console.log("!!!!!!!!!!!!!!!!!!!!!!!MATCH!!!!!!!!!!!!!!!!!!!!!!!!");
-			console.log(words[textIndex]);
-			splitText[i] = "<span style='background-color: yellow'>" + splitText[i] + "</span>";
-			changes++;
-		}
-	}
-	
-	console.log("Done Searching Doc!");
-
-	if (changes > 0){
-		console.log("Changes made!");
-		allText = splitText.join(" ");
+		var allText = element.innerHTML;
+  		var regex1 = new RegExp("\\b"+word+"\\b", "ig");
+  		console.log(regex1);
+  		allText = allText.replace(regex1, "<span style='background-color: yellow'>" + word + "</span>");
 		element.innerHTML = allText;
+		
 	}
+
 }

@@ -1,5 +1,13 @@
 //Background script is used for managing variables that get saved to chome's storage API
 
+/**
+* @file
+* @author Daniel Shenkle <shenkled@my.easternct.edu
+* @date 11/5/2016
+* @breif the background.js file is used for managing variables that get saved to chrome's storage API. It sets up the "enable", and "string" variables in chromes storage. 
+*/
+
+
 
 //Check to see if the enable variable is defined
 //If it is not define it otherwise do nothing with it.
