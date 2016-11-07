@@ -55,7 +55,6 @@ console.log("Done");
 
 function highlightText(element) {
 	getString(element, callback);
-	
 }	
 
 //Parse string and get words/ phrases seperated by a comma
@@ -105,13 +104,18 @@ function callback(element){
 
 	for (var i = 0; i < words.length; i++){
 		var word = words[i].trim();
-		console.log("Currently Highlighting: " + word);
-		
-		var allText = element.innerHTML;
-  		var regex1 = new RegExp("\\b"+word+"\\b", "ig");
-  		console.log(regex1);
-  		allText = allText.replace(regex1, "<span style='background-color: yellow'>" + word + "</span>");
-		element.innerHTML = allText;
+
+		if (word !== ""){
+			console.log("Currently Highlighting: " + word);
+			var allText = element.innerHTML;
+  			var regex1 = new RegExp("\\b"+word+"\\b", "ig");
+  			console.log(regex1);
+  			allText = allText.replace(regex1, "<span style='background-color: yellow'>" + word + "</span>");
+			element.innerHTML = allText;
+		}
+		else {
+			console.log("Skiping blank");
+		}
 		
 	}
 

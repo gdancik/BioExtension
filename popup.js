@@ -14,6 +14,9 @@ document.getElementById('highlight').addEventListener('click', sendHighlightMess
 document.getElementById('state').addEventListener('click', setState);
 document.getElementById('submit').addEventListener('click', submit);
 document.getElementById('file').addEventListener('change', loadFile);
+document.getElementById('view').addEventListener('click', showWords);
+document.getElementById('back').addEventListener('click', hideWords);
+document.getElementById('clear').addEventListener('click', clear);
 
 //When user clicks on the chrome icon it reloads the page hence we need to set up the elements corectly acording to the last
 //settings from when the icon was clicked (enabled buttons or disabled buttons)
@@ -43,6 +46,36 @@ document.addEventListener("DOMContentLoaded",function (){
     	string = obj["string"];
     	console.log(string);
     });
+
+    chrome.storage.local.get("showWords", function(obj){
+      show = obj["showWords"];
+      if (show === "true"){
+
+        words = [];
+
+        var index = string.indexOf("\n");
+        while (index != -1){
+          console.log("in loop");
+          words.push(string.substring(0, index));
+          string = string.substring(index + 1, string.length);
+          index = string.indexOf("\n");
+          console.log("Length of words: " + words.length);
+        }
+        words.push(string);
+        var showString = "";
+        for (var i = 0; i < words.length; i++){
+          showString += words[i] + "<br>";
+        }
+
+
+          document.getElementById('wordList').innerHTML = showString;
+          document.getElementById('form2').style.display = 'block';
+          document.getElementById('form1').style.display = 'none';
+      } else {
+          document.getElementById('form2').style.display = 'none';
+          document.getElementById('form1').style.display = 'block';
+      }
+    })
 });
 
 /**
@@ -146,7 +179,7 @@ function setupPage(){
 * Submits the contents of the text file choosen as a string into chromes storage API for use in the content.js script.
 */
 function submit(){
-	string += document.getElementById('text').value;
+	string += "\n" + document.getElementById('text').value;
 
 	chrome.storage.local.set({"string": string}, function(){
 		console.log("Saved string variable");
@@ -161,4 +194,24 @@ function syncString(){
 	chrome.storage.local.set({"string":string},function (){
         	console.log("Saved String");
     	});
+}
+
+/**
+* Hides standard form and shows current list of words
+*/
+function showWords(){
+  chrome.storage.local.set({"showWords":"true"},function (){
+    console.log("Showing words");
+  });
+  
+}
+
+function hideWords(){
+  chrome.storage.local.set({"showWords":"false"}, function(){
+    console.log("Hidding words");
+  });
+}
+
+function clear(){
+  chrome.storage.local.set({"string": ""});
 }
