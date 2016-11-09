@@ -101,22 +101,26 @@ function getString(element, callback){
 
 function callback(element){
 	console.log("Just after getString function call.");
+	var allText = element.innerHTML;
 
 	for (var i = 0; i < words.length; i++){
 		var word = words[i].trim();
 
 		if (word !== ""){
-			console.log("Currently Highlighting: " + word);
-			var allText = element.innerHTML;
+			//console.log("Currently Highlighting: " + word);
+
+			//>[not <]*word[not>]*<
+	
   			var regex1 = new RegExp("\\b"+word+"\\b", "ig");
-  			console.log(regex1);
+  			//console.log(regex1);
   			allText = allText.replace(regex1, "<span style='background-color: yellow'>" + word + "</span>");
-			element.innerHTML = allText;
+			
 		}
 		else {
 			console.log("Skiping blank");
 		}
 		
 	}
+	element.innerHTML = allText;
 
 }

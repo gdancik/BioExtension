@@ -6,6 +6,13 @@
 */
 
 
+//Emergencies
+/*
+ chrome.storage.local.set({"string":""},function (){
+  console.log("Saved String");
+});
+*/
+
 //Global variables for this class
 var enable;
 var string;
