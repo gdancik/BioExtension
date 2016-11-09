@@ -104,7 +104,10 @@ function callback(element){
 	mod(document.body);
 }
 
-
+/**
+* Recursivly goes through page and modifies elements that do not have child nodes 
+* Also ignores all SCRIPT tags.
+*/
 function mod(node){
 	if (node.children.length > 0){
 		var c = node.children;
