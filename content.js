@@ -85,6 +85,10 @@ function callback(element){
 	
 	for (var i = 0; i < splitText.length; i++){
 		checkingWord = splitText[i];
+
+		//ignore state here
+
+
 		console.log(checkingWord);
 		textIndex = words.indexOf(checkingWord);
       
