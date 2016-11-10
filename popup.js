@@ -9,6 +9,7 @@
 //Global variables for this class
 var enable;
 var string;
+var words = [];
 
 document.getElementById('highlight').addEventListener('click', sendHighlightMessage, false);
 document.getElementById('state').addEventListener('click', setState);
@@ -42,40 +43,26 @@ document.addEventListener("DOMContentLoaded",function (){
     	setupPage();
     });
 
-    chrome.storage.local.get("string", function(obj){
-    	string = obj["string"];
-    	console.log(string);
-    });
+    
 
     chrome.storage.local.get("showWords", function(obj){
       show = obj["showWords"];
       if (show === "true"){
 
-        words = [];
-
-        var index = string.indexOf("\n");
-        while (index != -1){
-          console.log("in loop");
-          words.push(string.substring(0, index));
-          string = string.substring(index + 1, string.length);
-          index = string.indexOf("\n");
-          console.log("Length of words: " + words.length);
-        }
-        words.push(string);
-        var showString = "";
-        for (var i = 0; i < words.length; i++){
-          showString += words[i] + "<br>";
-        }
-
-
+        chrome.storage.local.get("showString", function(obj){
+          var showString = obj["showString"];
           document.getElementById('wordList').innerHTML = showString;
+        });   
+
+
+          
           document.getElementById('form2').style.display = 'block';
           document.getElementById('form1').style.display = 'none';
       } else {
           document.getElementById('form2').style.display = 'none';
           document.getElementById('form1').style.display = 'block';
       }
-    })
+    });
 });
 
 /**
@@ -88,13 +75,19 @@ function loadFile(event) {
     reader.readAsText(file, "UTF-8");
     reader.onload = function (evt) {
       string = evt.target.result;
-      chrome.storage.local.set({"string":string},function (){
-       	console.log("Saved String");
-      });
-    }
-    reader.onerror = function (evt) {
-    	console.log("error reading file");
-      //document.getElementById("fileContents").innerHTML = "error reading file";
+
+      var index = string.indexOf("\n");
+  
+      while (index != -1){
+        console.log("in loop");
+        words.push(string.substring(0, index));
+        string = string.substring(index + 1, string.length);
+        index = string.indexOf("\n");
+        console.log("Length of words: " + words.length);
+      }
+      words.push(string);
+      //autoSubmit
+      submit();
     }
   }
 } 
@@ -179,22 +172,35 @@ function setupPage(){
 * Submits the contents of the text file choosen as a string into chromes storage API for use in the content.js script.
 */
 function submit(){
-	string += "\n" + document.getElementById('text').value;
+	var showString = "";
 
-	chrome.storage.local.set({"string": string}, function(){
-		console.log("Saved string variable");
-	});
+  for (var i = 0; i < words.length; i++){
+    console.log(words[i]);
+    showString += words[i] + "<br>";
+  }
+
+  chrome.storage.local.set({"string":words},function (){
+    console.log("Saved String");
+  });
+
+  chrome.storage.local.set({"showString":showString},function(){
+    console.log("Saved showString");
+  });
+  alert("Import Done!");
+  console.log("Import Done");
 }
 
 /**
 * I am honestly unsure about this one (hence the documentation frenzy)
 */
-
+/*
 function syncString(){
 	chrome.storage.local.set({"string":string},function (){
         	console.log("Saved String");
     	});
 }
+
+/*
 
 /**
 * Hides standard form and shows current list of words
@@ -212,6 +218,12 @@ function hideWords(){
   });
 }
 
+
+
 function clear(){
-  chrome.storage.local.set({"string": ""});
+  chrome.storage.local.set({"string":[]}, function(){
+    console.log("hi");
+  });
 }
+
+
