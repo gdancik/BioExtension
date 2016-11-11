@@ -16,11 +16,9 @@
 //Global variables for this class
 var enable;
 var string;
-<<<<<<< HEAD
-var wordCount;
-=======
->>>>>>> f1430edeec7ebd3419dd104de86c6b35a1f8f0f9
+
 var words = [];
+
 
 document.getElementById('highlight').addEventListener('click', sendHighlightMessage, false);
 document.getElementById('state').addEventListener('click', setState);
@@ -28,6 +26,7 @@ document.getElementById('submit').addEventListener('click', submit);
 document.getElementById('file').addEventListener('change', loadFile);
 document.getElementById('view').addEventListener('click', showWords);
 document.getElementById('back').addEventListener('click', hideWords);
+document.getElementById('backTop').addEventListener('click', hideWords);
 document.getElementById('clear').addEventListener('click', clear);
 
 //When user clicks on the chrome icon it reloads the page hence we need to set up the elements corectly acording to the last
@@ -69,9 +68,25 @@ document.addEventListener("DOMContentLoaded",function (){
          
           document.getElementById('form2').style.display = 'block';
           document.getElementById('form1').style.display = 'none';
+          chrome.storage.local.get("string", function(obj){
+            var temp = obj["string"];
+            var wordCount = temp.length;
+            if (wordCount > 30){
+              document.getElementById('backTop').style.display = 'block';
+            }
+            else {
+              document.getElementById('backTop').style.display = 'none';
+            }
+          });
       } else {
           document.getElementById('form2').style.display = 'none';
           document.getElementById('form1').style.display = 'block';
+          chrome.storage.local.get("string", function(obj){
+            var temp = obj["string"];
+            wordCount = temp.length;
+            document.getElementById('wordCount').innerHTML = "Word Count: " + wordCount;
+          });
+          
       }
     });
 });
