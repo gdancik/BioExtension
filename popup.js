@@ -16,6 +16,8 @@
 //Global variables for this class
 var enable;
 var string;
+var wordCount;
+var words = [];
 
 document.getElementById('highlight').addEventListener('click', sendHighlightMessage, false);
 document.getElementById('state').addEventListener('click', setState);
@@ -70,10 +72,10 @@ document.addEventListener("DOMContentLoaded",function (){
         }
         words.push(string);
         var showString = "";
-        for (var i = 0; i < words.length; i++){
+        for (var i = 0; i < 100; i++){
           showString += words[i] + "<br>";
         }
-
+        document.getElementById('wordCount').innerHTML = words.length;
 
           document.getElementById('wordList').innerHTML = showString;
           document.getElementById('form2').style.display = 'block';

@@ -101,26 +101,34 @@ function getString(element, callback){
 
 function callback(element){
 	console.log("Just after getString function call.");
-	var allText = element.innerHTML;
+	mod(document.body);
+}
 
-	for (var i = 0; i < words.length; i++){
-		var word = words[i].trim();
-
-		if (word !== ""){
-			//console.log("Currently Highlighting: " + word);
-
-			//>[not <]*word[not>]*<
-	
-  			var regex1 = new RegExp("\\b"+word+"\\b", "ig");
-  			//console.log(regex1);
-  			allText = allText.replace(regex1, "<span style='background-color: yellow'>" + word + "</span>");
-			
-		}
-		else {
-			console.log("Skiping blank");
-		}
+/**
+* Recursivly goes through page and modifies elements that do not have child nodes 
+* Also ignores all SCRIPT tags.
+*/
+function mod(node){
+	if (node.children.length > 0){
+		var c = node.children;
 		
-	}
-	element.innerHTML = allText;
+		for (var i = 0; i < c.length; i++){
+			mod(c[i]);
+		}
+	}else {
+		name = node.nodeName;
+		if (name !== "SCRIPT"){
+			for (var i = 0; i < words.length; i++){
 
+				var word = words[i].trim();
+
+				if (word !== ""){
+					var allText = node.innerHTML;
+  					var regex1 = new RegExp("\\b"+word+"\\b", "ig");
+  					allText = allText.replace(regex1, "<span style='background-color: yellow'>" + word + "</span>");
+					node.innerHTML = allText;
+				}		
+			}			
+		}
+	}
 }
