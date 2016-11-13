@@ -44,36 +44,34 @@ document.addEventListener("DOMContentLoaded",function (){
 
     chrome.storage.local.get("string", function(obj){
     	string = obj["string"];
-    	console.log(string);
+      words = [];
+
+      var index = string.indexOf("\n");
+      while (index != -1){
+        console.log("in loop");
+        words.push(string.substring(0, index));
+        string = string.substring(index + 1, string.length);
+        index = string.indexOf("\n");
+        console.log("Length of words: " + words.length);
+      }
+      words.push(string);
+      var showString = "";
+      for (var i = 0; i < words.length; i++){
+        showString += words[i] + "<br>";
+      }
     });
 
     chrome.storage.local.get("showWords", function(obj){
       show = obj["showWords"];
+
       if (show === "true"){
-
-        words = [];
-
-        var index = string.indexOf("\n");
-        while (index != -1){
-          console.log("in loop");
-          words.push(string.substring(0, index));
-          string = string.substring(index + 1, string.length);
-          index = string.indexOf("\n");
-          console.log("Length of words: " + words.length);
-        }
-        words.push(string);
-        var showString = "";
-        for (var i = 0; i < words.length; i++){
-          showString += words[i] + "<br>";
-        }
-
-
           document.getElementById('wordList').innerHTML = showString;
           document.getElementById('form2').style.display = 'block';
           document.getElementById('form1').style.display = 'none';
       } else {
           document.getElementById('form2').style.display = 'none';
           document.getElementById('form1').style.display = 'block';
+          document.getElementById('wordCount').innerHTML = "Word Count: " + words.length;
       }
     })
 });

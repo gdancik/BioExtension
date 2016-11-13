@@ -109,7 +109,7 @@ function callback(element){
 * Also ignores all SCRIPT tags.
 */
 function mod(node){
-	if (node.children.length > 0){
+	if (node.children.length > 0 && node.nodeName !== "P"){
 		var c = node.children;
 		
 		for (var i = 0; i < c.length; i++){
