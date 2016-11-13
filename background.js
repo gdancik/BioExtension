@@ -21,7 +21,7 @@ chrome.storage.local.get("enable", function(obj){
 
 chrome.storage.local.get("string", function(obj){
 	if (typeof obj["string"] === undefined){
-		chrome.storage.local.set({"string":""},function(){
+		chrome.storage.local.set({"string":[]},function(){
 			console.log("search var initialized");
 		});
 	}
@@ -31,6 +31,14 @@ chrome.storage.local.get("showWords", function(obj){
 	if (typeof obj["string"] === undefined){
 		chrome.storage.local.set({"showWords":"false"}, function(){
 			console.log("Show words variable initialized");
+		});
+	}
+});
+
+chrome.storage.local.get("showString", function(obj){
+	if (typeof obj["showString"] === undefined){
+		chrome.storage.local.set({"showString":""}, function(){
+			console.log("showString initialized");
 		});
 	}
 });
