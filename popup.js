@@ -111,6 +111,7 @@ function loadFile(event) {
       words.push(string);
       //autoSubmit
       submit();
+      alert("Words loaded");
     }
   }
 } 

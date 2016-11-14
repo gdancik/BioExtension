@@ -101,12 +101,12 @@ function callback(element){
   			
   			regex = new RegExp("(\\b" + word + "\\b)(?![^<]*>|[^<>]*<\\\\)", "img");
 
-  			allText = allText.replace(regex, "<span style='background-color: yellow'>" + word + "</span>");
+  			allText = allText.replace(regex, "<span id='popup' style='background-color: yellow'>" + word + "<span>Hi there</span></span>");
 		}		
 	}
 	element.innerHTML = allText;
 	console.log("Done highlighting!");
 	alert("Done highlighting");
-	
+
 }
 
