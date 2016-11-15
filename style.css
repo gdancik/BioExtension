@@ -71,28 +71,50 @@
     opacity: 1;
 }
 
+/*Popup CSS*/
+
 .popup {
     position: relative;
+    display: inline-block;
 }
 
-.popup span {
-    display: none;
+/* popup text */
+.popup .popuptext {
     visibility: hidden;
-    color: #FFFFFF;
+    font-size: 14px;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the popup text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+
+    /* Fade in popup */
+    opacity: 0;
+    transition: opacity 1s;
 }
 
-.popup:hover span {
-    display: block;
-    visibility: visible;
+/* popup arrow */
+.popup .popuptext::after {
+    content: "";
     position: absolute;
-    width: 200px;
-    background: #555;
-    /*height: 100px;*/
-    left: 100px;
-    top: -10px;
-    color: #FFFFFF;
-    padding: 0 5px;
-    box-shadow: 5px 5px 2px #888888;
-    z-index: 1;
-    content: "Hi there";
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Show the popup text when you mouse over the popup container */
+.popup:hover .popuptext {
+    visibility: visible;
+    opacity: 1;
 }

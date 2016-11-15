@@ -82,12 +82,6 @@ function getString(element, callback){
 */
 
 function callback(element){
-	//Add reff to my css
-	//var a = chrome.extension.getURL("css/style.css");
-	//$('<link rel="stylesheet" type="text/css" href="' + a + '" >').appendTo("head");
-
-	console.log("After url get");
-
 
 	alert("Highlighting Page this may take a moment...");
 
@@ -108,7 +102,7 @@ function callback(element){
   			
   			regex = new RegExp("(\\b" + word + "\\b)(?![^<]*>|[^<>]*<\\\\)", "img");
 
-  			allText = allText.replace(regex, "<div class='tooltip'><span style='background-color: yellow'>" + word + "</span><span class='tooltiptext'>Hi there please work</span></div>");
+  			allText = allText.replace(regex, "<div class='popup'><span style='background-color: yellow'>" + word + "</span><span class='popuptext'>Hi there please work</span></div>");
 		}		
 	}
 	element.innerHTML = allText;
