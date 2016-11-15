@@ -122,3 +122,22 @@
     visibility: visible;
     opacity: 1;
 }
+
+.wordList {
+    font-size: 14;
+    width: auto;
+}
+
+.showDiv {
+    float: left;
+    padding-left: 10px;
+    white-space: nowrap;
+    width: auto;
+    opacity: 0.2;
+}
+
+.settingsBody {
+    background-image: url("/img/background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}

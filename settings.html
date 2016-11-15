@@ -3,23 +3,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <title>Text Replacer</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body>
+<body id="bod">
   <div id="myHTML">
-    <center>
+      <p>Text Replacer is an awsome plugin that should be nice to use for some people</p>
   	 <form id="form1">
-  		  <button id="highlight" class="buttonEnable"><div class="tooltip">Highlight Text<span class="tooltiptext">Highlight the page!</span></div></button><br>
-  		  <button id="state" class="buttonEnable">Dissable</button><br>
-  		  <input type="text" name="var" id="text"><br>
-  		  <button id="submit" class="buttonEnable"><div class="tooltip">Submit<span class="tooltiptext">Saves text file for use</span></div></button><br>
-        <button id="view" class="buttonEnable"><div class="tooltip">Show List<span class="tooltiptext">Shows current word list.</span></div></button><br>
-        <button id="clear" class="buttonEnable">Clear word list.</button><br>
-        <button id="load2" class="buttonEnable">Load in Word List</button><br>
-        <input id="file" type="file" accept=".txt"><br> 
+  		<button id="view" class="buttonEnable">Show List</button><br>
+      <button id="clear" class="buttonEnable">Clear List</button><br>
+      <input id="file" type="file" accept=".txt"><br> 
   	 </form>
-    </center>
 
     <p id="wordCount">Words Entered:</p>
 
@@ -28,7 +23,9 @@
 
   <form id="form2" style="display: none;">
     <button id="backTop" class="buttonEnable">Back</button>
-    <div id="wordList">Loading word list please wait...</div>
+    <div id ="showDiv">
+      <div id="wordList">Loading word list please wait...</div>
+    </div>
     <button id="back" class="buttonEnable">Back</button>
   </form>
 
@@ -36,3 +33,4 @@
 
 </body>
 </html>
+

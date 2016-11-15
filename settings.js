@@ -19,21 +19,20 @@ var string;
 
 var words = [];
 
-
-document.getElementById('highlight').addEventListener('click', sendHighlightMessage, false);
-document.getElementById('state').addEventListener('click', setState);
-document.getElementById('submit').addEventListener('click', submit);
 document.getElementById('file').addEventListener('change', loadFile);
 document.getElementById('view').addEventListener('click', showWords);
 document.getElementById('back').addEventListener('click', hideWords);
 document.getElementById('backTop').addEventListener('click', hideWords);
 document.getElementById('clear').addEventListener('click', clear);
-document.getElementById('load2').addEventListener('click',loadFromWin2);
+
 
 
 //When user clicks on the chrome icon it reloads the page hence we need to set up the elements corectly acording to the last
 //settings from when the icon was clicked (enabled buttons or disabled buttons)
 document.addEventListener("DOMContentLoaded",function (){
+    //Set background
+    document.getElementById('bod').className = "settingsBody";
+    
     //Fetch all contents
     chrome.storage.local.get("enable", function(obj){
     	
@@ -51,8 +50,6 @@ document.addEventListener("DOMContentLoaded",function (){
     	}
     	console.log("Is enabled: " + obj["enable"]);
 
-    	//Now that we have inported the state we must set up the page corectely
-    	setupPage();
     });
 
     chrome.storage.local.get("showWords", function(obj){
@@ -62,6 +59,7 @@ document.addEventListener("DOMContentLoaded",function (){
 
         chrome.storage.local.get("showString", function(obj){
           var showString = obj["showString"];
+          document.getElementById('wordList').className = "wordList";
           document.getElementById('wordList').innerHTML = showString;
         });   
 
@@ -121,41 +119,6 @@ function loadFile(event) {
   }
 } 
 
-/**
-* Sends a message to the content.js script to begin the process of highlighting key words on the webpage.
-*/
-function sendHighlightMessage() {
-	if (enable){
-    console.log("Sending highlight message");
-		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-			chrome.tabs.sendMessage(tabs[0].id, {highlight: true}, function(response) {
-			console.log(response);
-			});
-		});
-		document.getElementById('highlight').innerHTML = "Remove Highlight";
-	} else if (!enable){
-		console.log("Can't highlight, not enabled");
-	} else {
-		console.log("Error: sendHighlightMessage: enable not defined correctely");
-	}
-}
-
-
-/**
-* Sets the state of the extension (either enabled or disabled)
-*/
-function setState(){
-
-	if (enable == true){
-		enable = false;
-	}
-	else {
-		enable = true;
-	}
-
-	setupPage();
-	saveState();
-}
 
 /**
 * Saves the current value of enable into chromes storage API. 
@@ -180,22 +143,7 @@ function saveState(){
 }
 
 
-/**
-* Sets up the page correctely bassed on the current state (enabled or disabled).
-*/
-function setupPage(){
-	if (enable == true){
-		document.getElementById('state').innerHTML = "Disable";
-		document.getElementById('highlight').disabled = false;
-		document.getElementById('highlight').className = "buttonEnable";
-	}else if (enable == false){
-		document.getElementById('state').innerHTML = "Enable";
-		document.getElementById('highlight').disabled = true;
-		document.getElementById('highlight').className = "buttonDisable";
-	}else {
-		console.log("Error: func setupPage: enable variable not set up correctely");
-	}
-}
+
 
 /**
 * Submits the contents of the text file choosen as a string into chromes storage API for use in the content.js script.
@@ -219,17 +167,6 @@ function submit(){
   console.log("Import Done");
 }
 
-/**
-* I am honestly unsure about this one (hence the documentation frenzy)
-*/
-/*
-function syncString(){
-	chrome.storage.local.set({"string":string},function (){
-        	console.log("Saved String");
-    	});
-}
-
-/*
 
 /**
 * Hides standard form and shows current list of words
@@ -256,23 +193,3 @@ function clear(){
 }
 
 
-function loadFromWin2(){
-    //Launch new window to prevent loss of focus bug
-  var popup_url = chrome.extension.getURL("popup.html");
-  
-  /*
-  chrome.windows.create({"url":popup_url, focused:true,type:'panel', width:600, height:250},function(win){
-     alert("Popup win created!");
-  });
-  */ 
-
-  chrome.tabs.create({"url":popup_url}, function(tab){
-    alert("Tab with id: "+tab.id+" created!");
-  });
-}
-
-function makePopText(){
-  var spans = document.getElementsByClassName("innerSpan");
-  spans.innerHTML = "Hi there";
-  console.log("Hi");
-}
