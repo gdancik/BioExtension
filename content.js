@@ -149,13 +149,8 @@ function dicHigh(element){
 	console.log("Dic highlight");
 
 	var allText = element.innerHTML;
-
-	//Pre-Process page
-	var regex = new RegExp(">", "gi");
-	allText = allText.replace(regex, "> ");
-
-	regex = new RegExp("<", "gi");
-	allText = allText.replace(regex, " <");
+	var cache = element.innerHTML;
+	var foundList = [];
 
 	for (var i = 0; i < words.length; i++){
 
@@ -166,12 +161,16 @@ function dicHigh(element){
   			regex = new RegExp("(\\b" + word + "\\b)(?![^<]*>|[^<>]*<\\\\)", "img");
 
   			allText = allText.replace(regex, "<div class='popup'><span style='background-color: yellow'>" + word + "</span><span class='popuptext'>" + word + ": " + defs[i] + "</span></div>");
+
+			if (allText !== cache){
+				foundList.push(word);
+				cache = allText;
+			}
 		}		
 	}
 	element.innerHTML = allText;
-	console.log("Done highlighting!");
-	hidePop();
-	console.log("Past hide");
+	//hidePop();
+	modPop(foundList);
 }
 
 function makePop(){
