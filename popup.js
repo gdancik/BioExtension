@@ -28,6 +28,8 @@ document.getElementById('view').addEventListener('click', showWords);
 document.getElementById('back').addEventListener('click', hideWords);
 document.getElementById('backTop').addEventListener('click', hideWords);
 document.getElementById('clear').addEventListener('click', clear);
+document.getElementById('load2').addEventListener('click',loadFromWin2);
+
 
 //When user clicks on the chrome icon it reloads the page hence we need to set up the elements corectly acording to the last
 //settings from when the icon was clicked (enabled buttons or disabled buttons)
@@ -92,6 +94,9 @@ document.addEventListener("DOMContentLoaded",function (){
 * Loads the file that was chosen by the user in the file chooser popup. 
 */
 function loadFile(event) {
+
+
+
   var file = event.target.files[0];
   if (file != null){
   	var reader = new FileReader();
@@ -251,3 +256,23 @@ function clear(){
 }
 
 
+function loadFromWin2(){
+    //Launch new window to prevent loss of focus bug
+  var popup_url = chrome.extension.getURL("popup.html");
+  
+  /*
+  chrome.windows.create({"url":popup_url, focused:true,type:'panel', width:600, height:250},function(win){
+     alert("Popup win created!");
+  });
+  */ 
+
+  chrome.tabs.create({"url":popup_url}, function(tab){
+    alert("Tab with id: "+tab.id+" created!");
+  });
+}
+
+function makePopText(){
+  var spans = document.getElementsByClassName("innerSpan");
+  spans.innerHTML = "Hi there";
+  console.log("Hi");
+}
