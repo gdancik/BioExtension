@@ -208,11 +208,15 @@ function modPop(wordsFound){
 		
 		//build inner structure
 		var items = "";
-		for (var i = 0; i < wordsFound.length; i++){
+		for (var i = 0; i < 10; i++){
 			items += "<li>" + wordsFound[i] + "</li>";
 		}
+
+		if (wordsFound.length >= 10){
+			items += "<li>...</li>" 
+		}
 		
-		var newHTML = "<ul>" + items + "</ul";
+		var newHTML = "Number of Words found<br><ul>" + items + "</ul";
 
 		content.innerHTML = newHTML;
 	}
