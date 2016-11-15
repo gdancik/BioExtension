@@ -43,6 +43,14 @@ chrome.storage.local.get("showString", function(obj){
 	}
 });
 
+chrome.storage.local.get("defs", function(obj){
+	if (typeof obj["defs"] === undefined){
+		chrome.storage.local.set({"defs":""}, function(){
+			console.log("Defs initialized");
+		});
+	}
+});
+
 //Set some content from background page
 //chrome.storage.local.set({"enable":"true"},function (){
     //console.log("Storage Succesful");
