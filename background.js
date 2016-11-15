@@ -51,6 +51,14 @@ chrome.storage.local.get("defs", function(obj){
 	}
 });
 
+chrome.storage.local.get("dic", function(obj){
+	if (typeof obj["dic"] === undefined){
+		chrome.storage.local.set({"dic":"false"}, function(){
+			console.log("initialized dic");
+		});
+	}
+});
+
 //Set some content from background page
 //chrome.storage.local.set({"enable":"true"},function (){
     //console.log("Storage Succesful");

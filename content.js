@@ -15,6 +15,7 @@ var string = "";
 
 //Words to check for
 var words = [];
+var defs = [];
 
 var nodeCount = document.body.children.length;
 
@@ -25,12 +26,13 @@ console.log(nodeCount);
 
 
 chrome.storage.local.get("enable", function(obj){
-   		string = obj["enable"];
-   		console.log("Enable: " + string);
-   		if (string === "true"){
-   			highlightText(document.body);
-   		}
-	});
+	string = obj["enable"];
+   	console.log("Enable: " + string);
+   	if (string === "true"){
+   		highlightText(document.body);
+   	}
+});
+
 
 
 
@@ -72,7 +74,31 @@ function getString(element, callback){
 	console.log("Geting string");
 	chrome.storage.local.get("string", function(obj){
    		words = obj["string"];
-   		callback(element);
+   		getType(element, callback);
+	});
+}
+
+/**
+ * Determines if we are currently working with a dictionary list or a standard word list
+ */
+
+function getType(element, callback){
+	chrome.storage.local.get("dic", function(obj){
+   		var dic = obj["dic"];
+		console.log("############");
+		console.log("# dic: " + dic);
+		console.log("############");
+		if (dic === "true"){
+
+			chrome.storage.local.get("defs", function(obj){
+   				defs = obj["defs"];
+				dicHigh(element);
+			});
+
+		}else {
+			callback(element);
+		}
+   		
 	});
 }
 
@@ -84,6 +110,7 @@ function getString(element, callback){
 function callback(element){
 
 	alert("Highlighting Page this may take a moment...");
+	console.log("standard highlight");
 
 	var allText = element.innerHTML;
 
@@ -102,12 +129,45 @@ function callback(element){
   			
   			regex = new RegExp("(\\b" + word + "\\b)(?![^<]*>|[^<>]*<\\\\)", "img");
 
-  			allText = allText.replace(regex, "<div class='popup'><span style='background-color: yellow'>" + word + "</span><span class='popuptext'>Hi there please work</span></div>");
+  			allText = allText.replace(regex, "<span style='background-color: yellow'>" + word + "</span>");
 		}		
 	}
 	element.innerHTML = allText;
 	console.log("Done highlighting!");
 	alert("Done highlighting");
 
+}
+
+
+
+
+
+function dicHigh(element){
+	alert("Highlighting Page this may take a moment...");
+	console.log("Dic highlight");
+
+	var allText = element.innerHTML;
+
+	//Pre-Process page
+	var regex = new RegExp(">", "gi");
+	allText = allText.replace(regex, "> ");
+
+	regex = new RegExp("<", "gi");
+	allText = allText.replace(regex, " <");
+
+	for (var i = 0; i < words.length; i++){
+
+		var word = words[i].trim();
+
+		if (word !== ""){
+  			
+  			regex = new RegExp("(\\b" + word + "\\b)(?![^<]*>|[^<>]*<\\\\)", "img");
+
+  			allText = allText.replace(regex, "<div class='popup'><span style='background-color: yellow'>" + word + "</span><span class='popuptext'>" + word + ": " + defs[i] + "</span></div>");
+		}		
+	}
+	element.innerHTML = allText;
+	console.log("Done highlighting!");
+	alert("Done highlighting");
 }
 

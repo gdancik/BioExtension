@@ -18,6 +18,7 @@ var enable;
 var string;
 
 var words = [];
+var defs = [];
 
 document.getElementById('file').addEventListener('change', loadFile);
 document.getElementById('view').addEventListener('click', showWords);
@@ -102,16 +103,51 @@ function loadFile(event) {
     reader.onload = function (evt) {
       string = evt.target.result;
 
-      var index = string.indexOf("\n");
-  
-      while (index != -1){
-        console.log("in loop");
-        words.push(string.substring(0, index));
-        string = string.substring(index + 1, string.length);
-        index = string.indexOf("\n");
-        console.log("Length of words: " + words.length);
+      //Determine if it is a dic file or a simple list
+      var index = string.indexOf(":");
+      if (index != -1){
+        console.log("Dic file");
+
+        chrome.storage.local.set({"dic":"true"}, function(){
+			    //console.log("initialized dic");
+		    });
+
+        index = string.indexOf(":");
+        var i = 0;
+        while (index != -1){
+          if (i % 2 == 0){
+            words.push(string.substring(0, index));
+            string = string.substring(index + 1, string.length);
+            index = string.indexOf("\n");
+          }
+          else {
+            var definition = string.substring(0, index);
+            console.log("DEF: " + definition);
+            defs.push(definition);
+            string = string.substring(index + 1, string.length);
+            index = string.indexOf(":");
+          }
+          i++;
+        }
+        defs.push(string);
       }
-      words.push(string);
+      else {
+        console.log("Standard list file");
+
+        chrome.storage.local.set({"dic":"false"}, function(){
+			    //console.log("initialized dic");
+	      });
+        
+        index = string.indexOf("\n");
+  
+        while (index != -1){
+          words.push(string.substring(0, index));
+          string = string.substring(index + 1, string.length);
+          index = string.indexOf("\n");
+        }
+        words.push(string);
+      }
+  
       //autoSubmit
       submit();
       alert("Words loaded");
@@ -163,6 +199,11 @@ function submit(){
   chrome.storage.local.set({"showString":showString},function(){
     console.log("Saved showString");
   });
+
+  chrome.storage.local.set({"defs":defs},function(){
+    console.log("Saved Defs");
+  });
+
   alert("Import Done!");
   console.log("Import Done");
 }
