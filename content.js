@@ -17,9 +17,9 @@ var string = "";
 var words = [];
 var defs = [];
 
-var nodeCount = document.body.children.length;
-
-console.log(nodeCount);
+makePop();
+document.getElementById("hide").addEventListener('click', hidePop);
+window.onclick = hidePop;
 
 //Definitions of words
 //var defs = ["Political Party", "I really don't know", "State in New-England"];
@@ -109,33 +109,33 @@ function getType(element, callback){
 
 function callback(element){
 
-	alert("Highlighting Page this may take a moment...");
+	showPop();
+	
 	console.log("standard highlight");
 
 	var allText = element.innerHTML;
-
-	//Pre-Process page
-	var regex = new RegExp(">", "gi");
-	allText = allText.replace(regex, "> ");
-
-	regex = new RegExp("<", "gi");
-	allText = allText.replace(regex, " <");
+	var cache = element.innerHTML;
+	var foundList = [];
 
 	for (var i = 0; i < words.length; i++){
 
 		var word = words[i].trim();
 
 		if (word !== ""){
-  			
-  			regex = new RegExp("(\\b" + word + "\\b)(?![^<]*>|[^<>]*<\\\\)", "img");
+  	
+	  		regex = new RegExp("(\\b" + word + "\\b)(?![^<]*>|[^<>]*<\\\\)", "img");
 
   			allText = allText.replace(regex, "<span style='background-color: yellow'>" + word + "</span>");
+	
+			if (allText !== cache){
+				foundList.push(word);
+				cache = allText;
+			}
 		}		
 	}
 	element.innerHTML = allText;
-	console.log("Done highlighting!");
-	alert("Done highlighting");
-
+	//hidePop();
+	modPop(foundList);
 }
 
 
@@ -143,7 +143,9 @@ function callback(element){
 
 
 function dicHigh(element){
-	alert("Highlighting Page this may take a moment...");
+
+	showPop();
+
 	console.log("Dic highlight");
 
 	var allText = element.innerHTML;
@@ -168,6 +170,52 @@ function dicHigh(element){
 	}
 	element.innerHTML = allText;
 	console.log("Done highlighting!");
-	alert("Done highlighting");
+	hidePop();
+	console.log("Past hide");
 }
 
+function makePop(){
+	//Popup code
+
+	var popup = `<div id="myModal" class="modal"><div class="modal-content"> 
+				<div class="modal-header"><span id="hide" class="close">&times</span> 
+				<h2 id="popHead">Highlighting please wait...</h2><div id="popCont"></div></div></div></div>`;
+
+	var body = document.getElementsByTagName('body')[0].innerHTML;
+	body += popup;
+
+	document.getElementsByTagName('body')[0].innerHTML = body;
+
+}
+
+function showPop(){
+	var modal = document.getElementById('myModal')
+	modal.style.display = "block";
+}
+
+function hidePop(){
+	console.log("Hide Event");
+	var modal = document.getElementById('myModal')
+	modal.style.display = "none";
+}
+
+function modPop(wordsFound){
+	if (wordsFound.length === 0){
+		document.getElementById('popHead').innerHTML = "No matches";
+	}
+	else {
+		document.getElementById('popHead').innerHTML = "Matches Found";
+		var content = document.getElementById('popCont');
+		
+		//build inner structure
+		var items = "";
+		for (var i = 0; i < wordsFound.length; i++){
+			items += "<li>" + wordsFound[i] + "</li>";
+		}
+		
+		var newHTML = "<ul>" + items + "</ul";
+
+		content.innerHTML = newHTML;
+	}
+
+}
