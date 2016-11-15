@@ -9,6 +9,8 @@
     font-size: 14px;
     margin: 4px 2px;
     cursor: pointer;
+    width: 150px;
+    height: 50px;
 }
 
 .buttonDisable {
@@ -22,6 +24,8 @@
     font-size: 14px;
     margin: 4px 2px;
     cursor: pointer;
+    width: 150px;
+    height: 50px;
 }
 
 /*Tool tip code from http://www.w3schools.com/howto/howto_css_tooltip.asp */

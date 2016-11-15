@@ -12,8 +12,12 @@
   	 <form id="form1">
   		  <button id="highlight" class="buttonEnable"><div class="tooltip">Highlight Text<span class="tooltiptext">Highlight the page!</span></div></button><br>
   		  <button id="state" class="buttonEnable">Dissable</button><br>
-  		  <button id="view" class="buttonEnable"><div class="tooltip">Show List<span class="tooltiptext">Shows current word list.</span></div></button><br>
-        <button id="showSettings" class="buttonEnable">Settings</button><br> 
+  		  <input type="text" name="var" id="text"><br>
+  		  <button id="submit" class="buttonEnable"><div class="tooltip">Submit<span class="tooltiptext">Saves text file for use</span></div></button><br>
+        <button id="view" class="buttonEnable"><div class="tooltip">Show List<span class="tooltiptext">Shows current word list.</span></div></button><br>
+        <button id="clear" class="buttonEnable">Clear word list.</button><br>
+        <button id="load2" class="buttonEnable">Load in Word List</button><br>
+        <input id="file" type="file" accept=".txt"><br> 
   	 </form>
     </center>
 
@@ -28,7 +32,7 @@
     <button id="back" class="buttonEnable">Back</button>
   </form>
 
-  <script src="popup.js"></script>
+  <script src="settings.js"></script>
 
 </body>
 </html>

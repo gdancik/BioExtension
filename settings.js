@@ -22,10 +22,13 @@ var words = [];
 
 document.getElementById('highlight').addEventListener('click', sendHighlightMessage, false);
 document.getElementById('state').addEventListener('click', setState);
+document.getElementById('submit').addEventListener('click', submit);
+document.getElementById('file').addEventListener('change', loadFile);
 document.getElementById('view').addEventListener('click', showWords);
 document.getElementById('back').addEventListener('click', hideWords);
 document.getElementById('backTop').addEventListener('click', hideWords);
-document.getElementById('showSettings').addEventListener('click',settings);
+document.getElementById('clear').addEventListener('click', clear);
+document.getElementById('load2').addEventListener('click',loadFromWin2);
 
 
 //When user clicks on the chrome icon it reloads the page hence we need to set up the elements corectly acording to the last
@@ -86,6 +89,37 @@ document.addEventListener("DOMContentLoaded",function (){
       }
     });
 });
+
+/**
+* Loads the file that was chosen by the user in the file chooser popup. 
+*/
+function loadFile(event) {
+
+
+
+  var file = event.target.files[0];
+  if (file != null){
+  	var reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) {
+      string = evt.target.result;
+
+      var index = string.indexOf("\n");
+  
+      while (index != -1){
+        console.log("in loop");
+        words.push(string.substring(0, index));
+        string = string.substring(index + 1, string.length);
+        index = string.indexOf("\n");
+        console.log("Length of words: " + words.length);
+      }
+      words.push(string);
+      //autoSubmit
+      submit();
+      alert("Words loaded");
+    }
+  }
+} 
 
 /**
 * Sends a message to the content.js script to begin the process of highlighting key words on the webpage.
@@ -164,6 +198,40 @@ function setupPage(){
 }
 
 /**
+* Submits the contents of the text file choosen as a string into chromes storage API for use in the content.js script.
+*/
+function submit(){
+	var showString = "";
+
+  for (var i = 0; i < words.length; i++){
+    console.log(words[i]);
+    showString += words[i] + "<br>";
+  }
+
+  chrome.storage.local.set({"string":words},function (){
+    console.log("Saved String");
+  });
+
+  chrome.storage.local.set({"showString":showString},function(){
+    console.log("Saved showString");
+  });
+  alert("Import Done!");
+  console.log("Import Done");
+}
+
+/**
+* I am honestly unsure about this one (hence the documentation frenzy)
+*/
+/*
+function syncString(){
+	chrome.storage.local.set({"string":string},function (){
+        	console.log("Saved String");
+    	});
+}
+
+/*
+
+/**
 * Hides standard form and shows current list of words
 */
 function showWords(){
@@ -180,9 +248,17 @@ function hideWords(){
 }
 
 
-function settings(){
+
+function clear(){
+  chrome.storage.local.set({"string":[]}, function(){
+    console.log("hi");
+  });
+}
+
+
+function loadFromWin2(){
     //Launch new window to prevent loss of focus bug
-  var popup_url = chrome.extension.getURL("settings.html");
+  var popup_url = chrome.extension.getURL("popup.html");
   
   /*
   chrome.windows.create({"url":popup_url, focused:true,type:'panel', width:600, height:250},function(win){
