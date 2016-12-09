@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Text Replacer</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body id="bod">
+  <div id="myHTML">
+      <p>Text Replacer is an awsome plugin that should be nice to use for some people</p>
+  	 <form id="form1">
+  		<button id="view" class="buttonEnable">Show List</button><br>
+      <button id="clear" class="buttonEnable">Clear List</button><br>
+      <input id="file" type="file" accept=".txt"><br> 
+  	 </form>
+
+    <p id="wordCount">Words Entered:</p>
+
+  </div>
+
+
+  <form id="form2" style="display: none;">
+    <button id="backTop" class="buttonEnable">Back</button>
+    <div id ="showDiv">
+      <div id="wordList">Loading word list please wait...</div>
+    </div>
+    <button id="back" class="buttonEnable">Back</button>
+  </form>
+
+  <script src="settings.js"></script>
+
+</body>
+</html>
+

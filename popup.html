@@ -1,0 +1,34 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+  <div id="myHTML">
+    <center>
+  	 <form id="form1">
+  		  <button id="highlight" class="buttonEnable"><div class="tooltip">Highlight Text<span class="tooltiptext">Highlight the page!</span></div></button><br>
+  		  <button id="state" class="buttonEnable">Dissable</button><br>
+  		  <button id="view" class="buttonEnable"><div class="tooltip">Show List<span class="tooltiptext">Shows current word list.</span></div></button><br>
+        <button id="showSettings" class="buttonEnable">Settings</button><br> 
+  	 </form>
+    </center>
+
+    <p id="wordCount">Words Entered:</p>
+
+  </div>
+
+
+  <form id="form2" style="display: none;">
+    <button id="backTop" class="buttonEnable">Back</button>
+    <div id="wordList">Loading word list please wait...</div>
+    <button id="back" class="buttonEnable">Back</button>
+  </form>
+
+  <script src="popup.js"></script>
+
+</body>
+</html>
